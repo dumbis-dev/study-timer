@@ -1,5 +1,38 @@
 import customtkinter
 
+# customtkinter.set_appearance_mode("system")
+
+
+class App(customtkinter.CTk):
+    """Window for the app"""
+
+    MAX_TIMERS = 10
+
+    def __init__(self):
+        super().__init__()
+
+        self.title("Study Timer")
+        self.minsize(360, 0)
+        self.attributes(topmost=True)
+        self.timer_frame = customtkinter.CTkFrame(
+            self, width=0, height=0, fg_color="transparent"
+        )
+        self.timer_frame.pack()
+
+        self.button = customtkinter.CTkButton(self, text="+", command=self.add_timer)
+        self.button.pack()
+
+        self.timer_count = 0
+
+    def add_timer(self):
+
+        if self.timer_count >= App.MAX_TIMERS:
+            return
+
+        row = TimerRow(self.timer_frame, 10)
+        row.pack()
+        self.timer_count += 1
+
 
 class TimerRow(customtkinter.CTkFrame):
     """Frame that holds timer."""
@@ -54,14 +87,5 @@ class TimerRow(customtkinter.CTkFrame):
         self.label.configure(text=f"{minutes:02d}:{seconds:02d}")
 
 
-app = customtkinter.CTk()
-app.geometry("350x150")
-app.title("Study Timer")
-app.attributes(topmost=True)
-
-row1 = TimerRow(app, 10)
-row1.pack()
-row2 = TimerRow(app, 5)
-row2.pack()
-
+app = App()
 app.mainloop()
